@@ -1526,8 +1526,8 @@ class Target {
 let dataObjectByTarget = []
 const indexOfTarget = {}
 const comparePriceInTarget = (a, b) => {
-  console.log(a.price)
-  return a.price < b.price
+
+  return parseInt(b.price) - parseInt(a.price)
 }
 data.map(item => {
   const target = item[9]
@@ -1541,4 +1541,7 @@ data.map(item => {
   dataObjectByTarget[indexOfTarget[target]].price += price
 })
 dataObjectByTarget.sort(comparePriceInTarget)
-// console.log(dataObjectByTarget)
+
+
+
+console.log(dataObjectByTarget)
