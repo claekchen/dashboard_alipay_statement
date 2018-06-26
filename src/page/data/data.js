@@ -1517,31 +1517,35 @@ const data = [
   ['"2017070121001004880237040545', '"', '"TQP00188255f880d6befe4850b99095f9cdae4d20', '"', '2017/7/1 13:37', '2017/7/1 13:37', '2017/7/1 13:37', '其他（包括阿里巴巴和外部商家）', '即时到账交易          ', '朱雯梁             ', '朱雯梁                 ', 21, '支出      ', '交易成功    ', 0, 0],
   ['"20170701164783957881 ', '"', '"                    ', '"', '2017/7/1 5:58', '                    ', '2017/7/1 5:58', '支付宝网站     ', '即时到账交易          ', '天弘基金管理有限公司      ', '余额宝-2017.06.30-收益发放 ', 0.03, '收入      ', '交易成功    ', 0, 0]
 ]
+let filter = []
 class Target {
   constructor (obj) {
     this.name = ''
-    this.price = 0
+    this.value = [0, 0]
   }
 }
 let dataObjectByTarget = []
+let res = []
 const indexOfTarget = {}
 const comparePriceInTarget = (a, b) => {
-
-  return parseInt(b.price) - parseInt(a.price)
+  return parseInt(b.value[1]) - parseInt(a.value[1])
 }
-data.map(item => {
+data.map((item, index) => {
   const target = item[9]
-  const price = item[11]
+  const action = item[12].trim()
+  const price = action === '收入' ? -item[11] : item[11]
   if (!indexOfTarget[target]) {
     const aTarget = new Target()
     aTarget.name = target
+    aTarget.value[0] = index
     dataObjectByTarget.push(aTarget)
     indexOfTarget[target] = dataObjectByTarget.length - 1
   }
-  dataObjectByTarget[indexOfTarget[target]].price += price
+  dataObjectByTarget[indexOfTarget[target]].value[1] += price
 })
 dataObjectByTarget.sort(comparePriceInTarget)
-
-
-
-console.log(dataObjectByTarget)
+dataObjectByTarget = dataObjectByTarget.map((item, index) =>{
+  item.value[0] = index
+  return item
+})
+export {dataObjectByTarget}
