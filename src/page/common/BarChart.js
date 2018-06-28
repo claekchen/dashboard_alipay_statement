@@ -12,6 +12,10 @@ class BarChart extends Component {
     const {id, option} = this.props
     let myChart = echarts.init(document.getElementById(id))
     myChart.setOption(option)
+    myChart.on('dblclick', (params) => {
+      console.log(params)
+      this.props.onDbclick(params.data.name.trim())
+    })
   }
   render () {
     const {id, style} = this.props
@@ -24,7 +28,8 @@ class BarChart extends Component {
 BarChart.propTypes = {
   id: PropTypes.string,
   style: PropTypes.object,
-  option: PropTypes.object
+  option: PropTypes.object,
+  onDbclick: PropTypes.func
 }
 
 export default BarChart

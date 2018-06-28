@@ -1,4 +1,5 @@
 import data from '../data/data'
+import * as types from '../constants/action-type'
 const comparePriceInTarget = (a, b) => {
     return parseInt(b.value[1]) - parseInt(a.value[1])
 }
@@ -35,7 +36,7 @@ initialState.dataObjectByTarget = initialState.dataObjectByTarget.map((item, ind
 })
 initialState.option = {
     title: {
-      text: 'ECharts 入门示例'
+      text: '支出排行'
     },
     tooltip: {},
     xAxis: {
@@ -56,5 +57,12 @@ initialState.option = {
     }] 
   }
 export default function app(state = initialState, action) {
-    return state
+  switch (action.type) {
+    case types.ADD_FILTER:
+      let newFilter = state.filter.slice(0)
+      newFilter.push(action.name)
+      return Object.assign({}, state, {filter: newFilter})
+    default:
+      return state;
+  }
 }
